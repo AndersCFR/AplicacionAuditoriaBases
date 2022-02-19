@@ -51,33 +51,37 @@ class Interfaz:
         self.frameTriggers =  None
         self.frameDatosAnomalos = None
         # Modelo bases de datos
-        self.gestorDatos= None    
+        self.gestorDatos = None    
         #self.dibujar()  
 
     def setGestorDatos(self, gestorDatos):
         self.gestorDatos = gestorDatos
 
     def mostrarFrameRelDeshabilitadas(self):
-        self.ocultarOtrosFrames();
+        self.ocultarOtrosFrames()
         self.frameRelaDeshabilitadas.place(x=posicionFrames[0], y=posicionFrames[1])
     
     def mostrarFrameRelInexistentes(self):
-        self.ocultarOtrosFrames();
+        self.ocultarOtrosFrames()
         self.frameRelaInexistentes.place(x=posicionFrames[0], y=posicionFrames[1])
     
     def mostrarFrameTriggers(self):
-        self.ocultarOtrosFrames();
+        self.ocultarOtrosFrames()
         self.frameTriggers.place(x=posicionFrames[0], y=posicionFrames[1])
 
     def mostrarFrameDatosAnomalos(self):
-        self.ocultarOtrosFrames();
+        self.ocultarOtrosFrames()
         self.frameDatosAnomalos.place(x=posicionFrames[0], y=posicionFrames[1])
     
     def ocultarOtrosFrames(self):                
         self.frameRelaDeshabilitadas.place_forget() 
         self.frameRelaInexistentes.place_forget() 
         self.frameTriggers.place_forget()
-        self.frameDatosAnomalos.place_forget()        
+        self.frameDatosAnomalos.place_forget()
+
+    def conectarBaseDatos(self, event):
+        base = self.comboBases.get()
+        self.gestorDatos.conectarConBase(base)
 
     def dibujar(self):
         ventana = tk.Tk()
@@ -86,7 +90,7 @@ class Interfaz:
         ventana.resizable(width=True ,height =True)
         ventana.configure(background=colorBlanco)
         ventana.resizable(0,0)
-        ventana.iconbitmap('img/icono.ico')
+        ventana.iconbitmap('../img/icono.ico')
         center(ventana)
 
 # -------  Creación Frames   ------------------------
@@ -116,7 +120,7 @@ class Interfaz:
 # ------------------------------------------------------------------------ #
 
         # Variables
-        basesDatos = ['A','B']
+        basesDatos = self.gestorDatos.getBasesExistentes()
 
         # Elementos Interfaz
         encabezado = Frame(ventana, width=anchoVentana, height=70, bg=colorCeleste,relief='sunken')
@@ -125,13 +129,14 @@ class Interfaz:
         labelTitulo.place(x=180, y=20)       
         label1 = ttk.Label(frameGlobal, text="Seleccione la Base de Datos a analizar:", background='#FFFFFF', font=("Courie",10))
         label1.place(x=40, y=90)
-        comboBases=tk.ttk.Combobox(frameGlobal,values=basesDatos,width=9)
-        comboBases.place(x=300,y=90)
+        self.comboBases=tk.ttk.Combobox(frameGlobal,values=basesDatos,width=30)
+        self.comboBases.place(x=300,y=90)
+        self.comboBases.bind('<<ComboboxSelected>>', self.conectarBaseDatos)
 
         #logoEPN
-        cargarImg(encabezado,'img/logo-EPN.png',(50,50),(30,8))
+        cargarImg(encabezado,'../img/logo-EPN.png',(50,50),(30,8))
         #logoFIS
-        cargarImg(encabezado,'img/logo-FIS.png',(50,50),(800,8))
+        cargarImg(encabezado,'../img/logo-FIS.png',(50,50),(800,8))
         
         #botones
         btnRelDeshabilitadas = Button(frameGlobal,text= 'Relaciones deshabilitadas',font=("Courie",9,'bold'),command=self.mostrarFrameRelDeshabilitadas, width=22, height=2, bd= 2,bg=colorBlanco, relief=GROOVE, highlightbackground=colorNegro)

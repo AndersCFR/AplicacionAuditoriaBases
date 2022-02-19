@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import*
 from tkinter import ttk
 from tkinter import messagebox
+from turtle import bgcolor
 from PIL import ImageTk, Image
 from tkinter import PhotoImage
 from PIL import Image,ImageTk
+from hamcrest import empty
 
 global colorCeleste
 colorCeleste = '#C6EBFF'
@@ -82,6 +84,15 @@ class Interfaz:
     def conectarBaseDatos(self, event):
         base = self.comboBases.get()
         self.gestorDatos.conectarConBase(base)
+        self.gestorDatos.borrarStoredProcedures()
+        self.gestorDatos.crearStoredProcedures()
+
+    # Verificación de selección de base
+    def sinSeleccionarBase(self):
+        if self.gestorDatos.baseActual == None:
+            messagebox.showerror(message=f'No se ha seleccionado ninguna base de datos', title='Error')
+            return True
+        else: return False
 
     def dibujar(self):
         ventana = tk.Tk()
@@ -155,12 +166,48 @@ class Interfaz:
 #                        Frame Relaciones deshabilitadas
 # ------------------------------------------------------------------------ #
 
+        style = ttk.Style(ventana)
+        style.theme_use("clam")
+        style.configure("Treeview.Heading", background=colorCeleste, foreground=colorNegro)
+
         #Variables
 
         #Elementos GUI     
         label2 = ttk.Label(self.frameRelaDeshabilitadas, text="Relaciones existentes en la base de datos, pero que se encuentran deshabilitadas:",
                              background=colorBlanco, font=("Courie",10))
         label2.place(x=40, y=20)
+               
+        #tabla
+        columnsT1 = ('Restricción de Clave Foránea','Nombre Tabla Hijo','Nombre Tabla Padre','¿Está deshabilitado?')
+        tabla1 = ttk.Treeview(self.frameRelaDeshabilitadas, height=15,columns=columnsT1,show='headings')
+        tabla1.place(x=40,y=50)     
+
+        for heading in columnsT1:            
+            tabla1.heading(heading, text=heading)
+            tabla1.column(heading,minwidth=0,width=180,stretch=NO)
+        
+        ladoy = Scrollbar(self.frameRelaDeshabilitadas, orient =VERTICAL, command = tabla1.yview)
+        ladoy.place(x=765,y=50)
+        ladoy.set(20,200)
+        tabla1.configure(yscrollcommand=ladoy.set)
+
+        def llenarData():
+            if self.sinSeleccionarBase() == False:
+                tabla1 = ttk.Treeview(self.frameRelaDeshabilitadas, height=15,columns=columnsT1,show='headings')
+                tabla1.place(x=40,y=50)     
+                for heading in columnsT1:            
+                    tabla1.heading(heading, text=heading)
+                    tabla1.column(heading,minwidth=0,width=180,stretch=NO)
+
+                data = self.gestorDatos.execRelacionesDeshabilitadas()
+                if data == []:
+                    messagebox.showinfo(message=f'No existen relaciones deshabilitadas', title='Enhorabuena')
+                for fila in data: 
+                    tabla1.insert('', 'end', values =fila)
+
+        btnExecRelDeshabilitadas = Button(self.frameRelaDeshabilitadas,text= 'Analizar',font=("Courie",9,'bold'),command=llenarData, width=10, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnExecRelDeshabilitadas.place(x=600,y=20)
+
 
 # ----------------------------------------------------------------------- #
 #                        Frame Relaciones inexistentes
@@ -172,6 +219,41 @@ class Interfaz:
         label3 = ttk.Label(self.frameRelaInexistentes, text='Posibles anomalías entre tablas de la base de datos con relaciones no existentes:',
                              background=colorBlanco, font=("Courie",10))
         label3.place(x=40, y=20)
+        
+        #tabla
+        columnsT2 = ('Tabla Analizada','Columna con Nombre Repetido','Posible Relación que Debería Crearse')
+        tabla2 = ttk.Treeview(self.frameRelaInexistentes, height=15,columns=columnsT2,show='headings')
+        tabla2.place(x=40,y=50)
+    
+        for head in columnsT2:  
+            tabla2.heading(head, text=head)
+            tabla2.column(head,minwidth=0,width=240,stretch=NO)
+        
+        ladoy2 = Scrollbar(self.frameRelaInexistentes, orient =VERTICAL, command = tabla2.yview)
+        ladoy2.place(x=765,y=50)
+        ladoy2.set(20,200)
+        tabla2.configure(yscrollcommand=ladoy2.set)
+
+        def llenarData2():
+            if self.sinSeleccionarBase() == False:
+                tabla2 = ttk.Treeview(self.frameRelaInexistentes, height=15,columns=columnsT2,show='headings')
+                tabla2.place(x=40,y=50)
+                for head in columnsT2:  
+                    tabla2.heading(head, text=head)
+                    tabla2.column(head,minwidth=0,width=240,stretch=NO)
+
+                data = self.gestorDatos.execPosiblesRelaciones()
+                if data == []:
+                    messagebox.showinfo(message=f'No se encontraron posibles relaciones inexistentes', title='Enhorabuena')
+                print(data)
+                for fila in data:             
+                    dato = fila
+                    if dato[2] == None:
+                        dato[2] = 'Sin posible tabla de relación'          
+                    tabla2.insert('', 'end', values=dato)
+
+        btnExecRelInexistentes = Button(self.frameRelaInexistentes,text= 'Analizar',font=("Courie",9,'bold'),command=llenarData2, width=10, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnExecRelInexistentes.place(x=600,y=20)
 
 
 # ----------------------------------------------------------------------- #
@@ -185,6 +267,42 @@ class Interfaz:
                              background=colorBlanco, font=("Courie",10))
         label4.place(x=40, y=20)
 
+         #tabla
+        columnsT3 = ('Nombre del Trigger','Acción','Tabla perteneciente','¿Está Deshabilitado?')
+        tabla3 = ttk.Treeview(self.frameTriggers, height=15,columns=columnsT3,show='headings')
+        tabla3.place(x=40,y=50)
+    
+        for head in columnsT3:  
+            tabla3.heading(head, text=head)
+            tabla3.column(head,minwidth=0,width=200,stretch=NO)
+        
+        ladoy3 = Scrollbar(self.frameTriggers, orient =VERTICAL, command = tabla3.yview)
+        ladoy3.place(x=850,y=50)
+        ladoy3.set(20,200)
+        tabla3.configure(yscrollcommand=ladoy3.set)
+
+        def llenarData3():    
+            if self.sinSeleccionarBase() == False:      
+                tabla3 = ttk.Treeview(self.frameTriggers, height=15,columns=columnsT3,show='headings')
+                tabla3.place(x=40,y=50)
+        
+                for head in columnsT3:  
+                    tabla3.heading(head, text=head)
+                    tabla3.column(head,minwidth=0,width=200,stretch=NO)
+
+                data = self.gestorDatos.execTriggersDeshabilitados()
+                if data == []:
+                    messagebox.showinfo(message=f'No se encontró ningún trigger deshabilitado', title='Enhorabuena')
+                print(data)
+                for fila in data:             
+                    dato = fila           
+                    tabla3.insert('', 'end', values=dato)
+
+        btnExecTrigger = Button(self.frameTriggers,text= 'Analizar',font=("Courie",9,'bold'),command=llenarData3, width=10, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnExecTrigger.place(x=600,y=20)
+
+
+
 
 # ----------------------------------------------------------------------- #
 #                        Frame Datos Anomalos
@@ -193,9 +311,43 @@ class Interfaz:
         #Variables
 
         #Elementos GUI     
-        label5 = ttk.Label(self.frameDatosAnomalos, text='Se encontraron los siguientes datos anómalos::',
+        label5 = ttk.Label(self.frameDatosAnomalos, text='Se encontraron los siguientes datos anómalos:',
                              background=colorBlanco, font=("Courie",10))
         label5.place(x=40, y=20)
+
+                #tabla
+        columnsT4 = ('Nombre de la Tabla','Restricción de la Clave Foránea','Dato Anómalo')
+        tabla4 = ttk.Treeview(self.frameDatosAnomalos, height=15,columns=columnsT4,show='headings')
+        tabla4.place(x=40,y=50)
+    
+        for head in columnsT4:  
+            tabla4.heading(head, text=head)
+            tabla4.column(head,minwidth=0,width=220,stretch=NO)
+        
+        ladoy4 = Scrollbar(self.frameDatosAnomalos, orient =VERTICAL, command = tabla4.yview)
+        ladoy4.place(x=710,y=50)
+        ladoy4.set(20,200)
+        tabla4.configure(yscrollcommand=ladoy4.set)
+
+        def llenarData4():
+            if self.sinSeleccionarBase() == False:
+                tabla4 = ttk.Treeview(self.frameDatosAnomalos, height=15,columns=columnsT4,show='headings')
+                tabla4.place(x=40,y=50)
+                for head in columnsT4:  
+                    tabla4.heading(head, text=head)
+                    tabla4.column(head,minwidth=0,width=220,stretch=NO)
+                data = self.gestorDatos.execChequeoAutomatico()
+                if data == []:
+                    messagebox.showinfo(message=f'No se encontraron datos anómalos', title='Enhorabuena')
+                print(data)
+                for fila in data:             
+                    dato = fila                  
+                    tabla4.insert('', 'end', values=dato)
+
+        btnExecTrigger = Button(self.frameDatosAnomalos,text= 'Analizar',font=("Courie",9,'bold'),command=llenarData4, width=10, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnExecTrigger.place(x=600,y=20)
+
+
 
 
 # ------- Main loop --------------------#        

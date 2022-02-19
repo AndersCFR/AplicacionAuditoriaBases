@@ -1,4 +1,5 @@
 import pyodbc
+from tkinter import messagebox
 
 class BaseDatos:
     def __init__(self):
@@ -22,7 +23,7 @@ class BaseDatos:
                                             'SERVER=' + self.direccion_servidor +
                                             ';UID=' + self.nombre_usuario +
                                             ';PWD=' + self.password)
-            print('Conexión exitosa!')
+            print('Conexión exitosa!')            
             # Cursor de la conexión
             self.cursor = self.conexion.cursor()
         except Exception as e:
@@ -44,12 +45,14 @@ class BaseDatos:
                                             'SERVER=' + self.direccion_servidor +
                                             ';DATABASE=' + self.baseActual +
                                             ';UID=' + self.nombre_usuario +
-                                            ';PWD=' + self.password)
-            print(f'Conexión a la base {self.baseActual} exitosa!')
+                                            ';PWD=' + self.password)            
+            messagebox.showinfo(message=f'Conexión a la base {self.baseActual} exitosa!', title='Conexión exitosa')
+
             # Cursor de la conexión
             self.cursor = self.conexion.cursor()
         except Exception as e:
             # Atrapar error
+            messagebox.showerror(message=f'Ocurrió un error al conectar a la base {self.baseActual}', title='Error en la conexión')
             print(f"Ocurrió un error al conectar a la base {self.baseActual}", e)
 
     # Devuelve una lista de strings con los nombres de las bases existentes

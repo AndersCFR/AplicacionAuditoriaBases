@@ -2,6 +2,9 @@ Use pubs_con_anomalias
 go
 
 /************************************************ 1.1. RELACIONES DESHABILITADAS ************************************************/
+IF OBJECT_ID('RelacionesDeshabilitadas') IS NOT NULL
+	DROP PROCEDURE RelacionesDeshabilitadas
+GO
 CREATE PROCEDURE RelacionesDeshabilitadas
 AS
 BEGIN
@@ -16,6 +19,9 @@ GO
 
 
 /************************************************ 1.2. POSIBLES RELACIONES ************************************************/
+IF OBJECT_ID('PosiblesRelaciones') IS NOT NULL
+	DROP PROCEDURE PosiblesRelaciones
+GO
 CREATE PROCEDURE PosiblesRelaciones
 AS
 BEGIN
@@ -131,6 +137,9 @@ GO
 
 
 /************************************************ 2. TRIGGERS DESHABILITADOS ************************************************/
+IF OBJECT_ID('TriggersDeshabilitados') IS NOT NULL
+	DROP PROCEDURE TriggersDeshabilitados
+GO
 CREATE PROCEDURE TriggersDeshabilitados
 AS
 BEGIN
@@ -146,7 +155,11 @@ BEGIN
 END
 GO
 
+
 /************************************************ 3. CHEQUEO AUTOMÁTICO ************************************************/
+IF OBJECT_ID('ChequeoAutomatico') IS NOT NULL
+	DROP PROCEDURE ChequeoAutomatico
+GO
 CREATE PROCEDURE ChequeoAutomatico
 AS
 BEGIN

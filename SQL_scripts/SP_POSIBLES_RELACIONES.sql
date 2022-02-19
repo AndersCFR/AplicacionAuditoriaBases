@@ -1,30 +1,8 @@
-Use pubs_con_anomalias
-go
-
-/************************************************ 1.1. RELACIONES DESHABILITADAS ************************************************/
-IF OBJECT_ID('RelacionesDeshabilitadas') IS NOT NULL
-	DROP PROCEDURE RelacionesDeshabilitadas
-GO
-CREATE PROCEDURE RelacionesDeshabilitadas
-AS
-BEGIN
-	SELECT
-		OBJECT_NAME(parent_object_id) as 'Tabla hijo',
-		OBJECT_NAME(referenced_object_id) as 'Tabla padre',
-		is_disabled as '¿Deshabilitado?'
-	FROM sys.foreign_keys
-	WHERE is_disabled = 1
-END
-GO
-
-
 /************************************************ 1.2. POSIBLES RELACIONES ************************************************/
-IF OBJECT_ID('PosiblesRelaciones') IS NOT NULL
-	DROP PROCEDURE PosiblesRelaciones
-GO
 CREATE PROCEDURE PosiblesRelaciones
 AS
 BEGIN
+	SET NOCOUNT ON
 	/* Tabla temporal: Encontrar PK */
 	SELECT 
 		tablas.name as 'Tabla',
@@ -133,50 +111,3 @@ BEGIN
 	DROP TABLE columnas
 	DROP TABLE Claves_Primarias
 END
-GO
-
-
-/************************************************ 2. TRIGGERS DESHABILITADOS ************************************************/
-IF OBJECT_ID('TriggersDeshabilitados') IS NOT NULL
-	DROP PROCEDURE TriggersDeshabilitados
-GO
-CREATE PROCEDURE TriggersDeshabilitados
-AS
-BEGIN
-	SELECT
-		OBJECT_NAME(te.object_id) as 'Trigger',
-		te.type_desc as 'On',
-		OBJECT_NAME(t.parent_id) as 'Tabla',
-		t.is_disabled as '¿Deshabilitado?'
-	FROM sys.trigger_events te
-	JOIN sys.triggers t
-		ON te.object_id = t.object_id
-	WHERE is_disabled = 1
-END
-GO
-
-
-/************************************************ 3. CHEQUEO AUTOMÁTICO ************************************************/
-IF OBJECT_ID('ChequeoAutomatico') IS NOT NULL
-	DROP PROCEDURE ChequeoAutomatico
-GO
-CREATE PROCEDURE ChequeoAutomatico
-AS
-BEGIN
-	CREATE TABLE DatosAnomalos (
-		Tabla VARCHAR(100),
-		[Restriccion de FK] VARCHAR(100),
-		[Valor anomalo] VARCHAR(100)
-	)
-	INSERT INTO DatosAnomalos EXEC('DBCC CHECKCONSTRAINTS WITH ALL_CONSTRAINTS')
-	SELECT * FROM DatosAnomalos
-	DROP TABLE DatosAnomalos
-END
-GO
-
-/*
-EXEC RelacionesDeshabilitadas
-EXEC PosiblesRelaciones
-EXEC TriggersDeshabilitados
-EXEC ChequeoAutomatico
-*/

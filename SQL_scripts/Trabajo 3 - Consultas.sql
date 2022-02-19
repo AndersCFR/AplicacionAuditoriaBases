@@ -2,13 +2,14 @@ Use pubs_con_anomalias
 go
 
 /************************************************ 1.1. RELACIONES DESHABILITADAS ************************************************/
+
 CREATE PROCEDURE RelacionesDeshabilitadas
 AS
 BEGIN
 	SELECT
 		OBJECT_NAME(parent_object_id) as 'Tabla hijo',
 		OBJECT_NAME(referenced_object_id) as 'Tabla padre',
-		is_disabled as '¿Deshabilitado?'
+		is_disabled as 'ï¿½Deshabilitado?'
 	FROM sys.foreign_keys
 	WHERE is_disabled = 1
 END
@@ -56,16 +57,16 @@ BEGIN
 		column_name as 'Columna',
 		Tablas as 'Tablas donde la columna es PK'
 	FROM (
-		/* Columnas que no apuntan a un padre y al tener nombres similares pueden implicar que falta una relación */
+		/* Columnas que no apuntan a un padre y al tener nombres similares pueden implicar que falta una relaciï¿½n */
 		SELECT
 			table_name, column_name
 		FROM (
-			/* Columnas que tienen más de 1 ocurrencia con su respectiva tabla */
+			/* Columnas que tienen mï¿½s de 1 ocurrencia con su respectiva tabla */
 			SELECT
 				columnas.column_name,
 				columnas.table_name
 			FROM (
-				/* Columnas que tienen más de 1 ocurrencia */
+				/* Columnas que tienen mï¿½s de 1 ocurrencia */
 				SELECT column_name FROM columnas
 				GROUP BY column_name
 				HAVING COUNT(*) > 1
@@ -76,7 +77,7 @@ BEGIN
 			ON columnas_repetidas.column_name = columnas.column_name
 			) posibles_relaciones
 		FULL JOIN (
-			/* Restricciones de clave foránea con sus respectivas columnas */
+			/* Restricciones de clave forï¿½nea con sus respectivas columnas */
 			SELECT
 				fk_tab.name as 'Tabla Hijo',
 				pk_tab.name as 'Tabla Padre', 
@@ -109,7 +110,7 @@ BEGIN
 		/* Claves primarias y sus tablas */
 		SELECT
 			[Columna PK],
-			/* Concatenación de los nombres de las tablas */
+			/* Concatenaciï¿½n de los nombres de las tablas */
 			STUFF((
 				SELECT ', ' + Tabla
 				FROM Claves_Primarias
@@ -119,7 +120,7 @@ BEGIN
 		FROM Claves_Primarias claves
 		GROUP BY [Columna PK]
 	) pk_tablas
-	/* Se buscan tablas con las que podría necesitarse una relación */
+	/* Se buscan tablas con las que podrï¿½a necesitarse una relaciï¿½n */
 	ON columnas_posibles.column_name = pk_tablas.[Columna PK]
 	ORDER BY column_name
 
@@ -138,7 +139,7 @@ BEGIN
 		OBJECT_NAME(te.object_id) as 'Trigger',
 		te.type_desc as 'On',
 		OBJECT_NAME(t.parent_id) as 'Tabla',
-		t.is_disabled as '¿Deshabilitado?'
+		t.is_disabled as 'ï¿½Deshabilitado?'
 	FROM sys.trigger_events te
 	JOIN sys.triggers t
 		ON te.object_id = t.object_id
@@ -146,7 +147,7 @@ BEGIN
 END
 GO
 
-/************************************************ 3. CHEQUEO AUTOMÁTICO ************************************************/
+/************************************************ 3. CHEQUEO AUTOMï¿½TICO ************************************************/
 CREATE PROCEDURE ChequeoAutomatico
 AS
 BEGIN

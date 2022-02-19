@@ -25,7 +25,7 @@ try:
     conexion = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' +
                               direccion_servidor+';DATABASE='+base+';UID='+nombre_usuario+';PWD=' + password)
     # Crear Todos los procesdimientos
-    
+
     tablas = conexion.cursor().tables()
     for tabla in tablas:
         print(tabla)
@@ -33,3 +33,13 @@ try:
 except Exception as e:
     # Atrapar error
     print("Ocurrió un error al conectar a SQL Server: ", e)
+
+
+class BaseDatos:
+    def __init__(self):
+        pass
+        self.conectar
+    def conectar(self):
+        pass
+    def setBaseDatos(self, nombreBaseDatos: str):
+        pass

@@ -1,51 +1,85 @@
 **************************************************
-Fecha y hora del análisis: 2022-02-19 20:07:07.167179
+Fecha y hora del anï¿½lisis: 2022-02-19 20:07:07.167179
 Base de datos: pubs
 Servidor: localhost
 Usuario: sa
 --------------------Relaciones deshabilitadas--------------------
-Restricción de Clave Foránea       Nombre Tabla Hijo                  Nombre Tabla Padre                 ¿Está deshabilitado?               
+Restricciï¿½n de Clave Forï¿½nea       Nombre Tabla Hijo                  Nombre Tabla Padre                 ï¿½Estï¿½ deshabilitado?               
 FK__titles__pub_id__2D27B809       titles                             publishers                         1                                  
 ----------------------------------------
 
 **************************************************
-Fecha y hora del análisis: 2022-02-19 20:07:12.286446
+Fecha y hora del anï¿½lisis: 2022-02-19 20:07:12.286446
 Base de datos: pubs
 Servidor: localhost
 Usuario: sa
 --------------------Relaciones inexistentes--------------------
-Tabla Analizada                    Columna con Nombre Repetido        Posible Relación que Debería Crearse
-authors                            city                               Sin posible tabla de relación      
-publishers                         city                               Sin posible tabla de relación      
-stores                             city                               Sin posible tabla de relación      
+Tabla Analizada                    Columna con Nombre Repetido        Posible Relaciï¿½n que Deberï¿½a Crearse
+authors                            city                               Sin posible tabla de relaciï¿½n      
+publishers                         city                               Sin posible tabla de relaciï¿½n      
+stores                             city                               Sin posible tabla de relaciï¿½n      
 pub_info                           pub_id                             publishers, pub_info               
-roysched                           royalty                            Sin posible tabla de relación      
-titles                             royalty                            Sin posible tabla de relación      
-publishers                         state                              Sin posible tabla de relación      
-authors                            state                              Sin posible tabla de relación      
-stores                             state                              Sin posible tabla de relación      
-stores                             zip                                Sin posible tabla de relación      
-authors                            zip                                Sin posible tabla de relación      
+roysched                           royalty                            Sin posible tabla de relaciï¿½n      
+titles                             royalty                            Sin posible tabla de relaciï¿½n      
+publishers                         state                              Sin posible tabla de relaciï¿½n      
+authors                            state                              Sin posible tabla de relaciï¿½n      
+stores                             state                              Sin posible tabla de relaciï¿½n      
+stores                             zip                                Sin posible tabla de relaciï¿½n      
+authors                            zip                                Sin posible tabla de relaciï¿½n      
 ----------------------------------------
 
 **************************************************
-Fecha y hora del análisis: 2022-02-19 20:07:15.417812
+Fecha y hora del anï¿½lisis: 2022-02-19 20:07:15.417812
 Base de datos: pubs
 Servidor: localhost
 Usuario: sa
 --------------------Triggers deshabilitados--------------------
-Nombre del Trigger                 Acción                             Tabla perteneciente                ¿Está Deshabilitado?               
+Nombre del Trigger                 Acciï¿½n                             Tabla perteneciente                ï¿½Estï¿½ Deshabilitado?               
 employee_insupd                    INSERT                             employee                           1                                  
 employee_insupd                    UPDATE                             employee                           1                                  
 ----------------------------------------
 
 **************************************************
-Fecha y hora del análisis: 2022-02-19 20:07:21.788727
+Fecha y hora del anï¿½lisis: 2022-02-19 20:07:21.788727
 Base de datos: pubs
 Servidor: localhost
 Usuario: sa
---------------------Datos anómalos--------------------
-Nombre de la Tabla                 Restricción de la Clave Foránea    Dato Anómalo                       
+--------------------Datos anï¿½malos--------------------
+Nombre de la Tabla                 Restricciï¿½n                        Dato Anï¿½malo                       
 [dbo].[employee]                   [FK__employee__job_id__47DBAE45]   [job_id] = '15'                    
+----------------------------------------
+
+**************************************************
+Fecha y hora del anï¿½lisis: 2022-02-20 23:32:57.958293
+Base de datos: pubs_D
+Servidor: localhost
+Usuario: sa
+--------------------Datos anï¿½malos--------------------
+Nombre de la Tabla                 Restricciï¿½n                        Dato Anï¿½malo                       
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '172-32-0000'            
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '172-32-1100'            
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '72-22-1100'             
+[dbo].[pub_info]                   [FK__pub_info__pub_id__440B1D61]   [pub_id] = '9911'                  
+[dbo].[pub_info]                   [FK__pub_info__pub_id__440B1D61]   [pub_id] = '9922'                  
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'ASDA6025J'             
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'PAJ96086J'             
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'PSA89086J'             
+----------------------------------------
+
+**************************************************
+Fecha y hora del anï¿½lisis: 2022-02-20 23:34:14.794993
+Base de datos: pubs_D
+Servidor: localhost
+Usuario: sa
+--------------------Datos anï¿½malos--------------------
+Nombre de la Tabla                 Restricciï¿½n                        Dato Anï¿½malo                       
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '172-32-0000'            
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '172-32-1100'            
+[dbo].[titleauthor]                [FK__titleauth__au_id__31EC6D26]   [au_id] = '72-22-1100'             
+[dbo].[pub_info]                   [FK__pub_info__pub_id__440B1D61]   [pub_id] = '9911'                  
+[dbo].[pub_info]                   [FK__pub_info__pub_id__440B1D61]   [pub_id] = '9922'                  
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'ASDA6025J'             
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'PAJ96086J'             
+[dbo].[employee]                   [CK_emp_id]                        [emp_id] = 'PSA89086J'             
 ----------------------------------------
 

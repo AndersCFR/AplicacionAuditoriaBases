@@ -215,14 +215,14 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
         ladoy.set(20,200)
         tabla1.configure(yscrollcommand=ladoy.set)
 
-        def exporatLOGRelDeshabilitadas():
+        def exportarLOGRelDeshabilitadas():
             data = self.gestorDatos.execRelacionesDeshabilitadas()
             if data == []:
                 data = [['No se encontraron relaciones deshabilitadas']]
             self.escribirLog('Relaciones deshabilitadas',columnsT1,data)
 
         
-        btnLogRelDeshabilitadas = Button(self.frameRelaDeshabilitadas,text= 'Generar LOG',font=("Courie",9,'bold'),command=exporatLOGRelDeshabilitadas, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnLogRelDeshabilitadas = Button(self.frameRelaDeshabilitadas,text= 'Generar LOG',font=("Courie",9,'bold'),command=exportarLOGRelDeshabilitadas, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
         btnLogRelDeshabilitadas.config(state=tk.DISABLED)
         btnLogRelDeshabilitadas.place(x=700,y=20)
 
@@ -277,7 +277,7 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
         ladoy2.set(20,200)
         tabla2.configure(yscrollcommand=ladoy2.set)
 
-        def exporatLOGRelInexistentes():
+        def exportarLOGRelInexistentes():
             data = self.gestorDatos.execPosiblesRelaciones()
             if data == []:
                 data = [['No se encontraron posibles relaciones inexistentes']]
@@ -287,7 +287,7 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
                         fila[2] = 'Sin posible tabla de relación'
             self.escribirLog('Relaciones inexistentes',columnsT2,data)
 
-        btnLogRelInexistentes = Button(self.frameRelaInexistentes,text= 'Generar LOG',font=("Courie",9,'bold'),command=exporatLOGRelInexistentes, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnLogRelInexistentes = Button(self.frameRelaInexistentes,text= 'Generar LOG',font=("Courie",9,'bold'),command=exportarLOGRelInexistentes, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
         btnLogRelInexistentes.config(state=tk.DISABLED)
         btnLogRelInexistentes.place(x=700,y=20)
 
@@ -302,7 +302,6 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
                 data = self.gestorDatos.execPosiblesRelaciones()
                 if data == []:
                     messagebox.showinfo(message=f'No se encontraron posibles relaciones inexistentes', title='Enhorabuena')
-                print(data)
                 for fila in data:             
                     dato = fila
                     if dato[2] == None:
@@ -340,13 +339,13 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
         ladoy3.set(20,200)
         tabla3.configure(yscrollcommand=ladoy3.set)
 
-        def exporatLOGTrigger():
+        def exportarLOGTrigger():
             data = self.gestorDatos.execTriggersDeshabilitados()
             if data == []:
                 data = [['No se encontró ningún trigger deshabilitado']]
             self.escribirLog('Triggers deshabilitados',columnsT3,data)
 
-        btnLogTrigger = Button(self.frameTriggers,text= 'Generar LOG',font=("Courie",9,'bold'),command=exporatLOGTrigger, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnLogTrigger = Button(self.frameTriggers,text= 'Generar LOG',font=("Courie",9,'bold'),command=exportarLOGTrigger, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
         btnLogTrigger.config(state=tk.DISABLED)
         btnLogTrigger.place(x=700,y=20)
 
@@ -362,7 +361,6 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
                 data = self.gestorDatos.execTriggersDeshabilitados()
                 if data == []:
                     messagebox.showinfo(message=f'No se encontró ningún trigger deshabilitado', title='Enhorabuena')
-                print(data)
                 for fila in data:             
                     dato = fila           
                     tabla3.insert('', 'end', values=dato)
@@ -387,7 +385,7 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
         label5.place(x=40, y=20)
 
                 #tabla
-        columnsT4 = ('Nombre de la Tabla','Restricción de la Clave Foránea','Dato Anómalo')
+        columnsT4 = ('Nombre de la Tabla','Restricción','Dato Anómalo')
         tabla4 = ttk.Treeview(self.frameDatosAnomalos, height=15,columns=columnsT4,show='headings')
         tabla4.place(x=40,y=50)
     
@@ -400,13 +398,13 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
         ladoy4.set(20,200)
         tabla4.configure(yscrollcommand=ladoy4.set)
 
-        def exporatLOGDatosAnomalos():
+        def exportarLOGDatosAnomalos():
             data = self.gestorDatos.execChequeoAutomatico()
             if data == []:
                 data = [['No se encontraron datos anómalos']]
             self.escribirLog('Datos anómalos',columnsT4,data)
 
-        btnLogDatosAnomalos = Button(self.frameDatosAnomalos,text= 'Generar LOG',font=("Courie",9,'bold'),command=exporatLOGDatosAnomalos, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
+        btnLogDatosAnomalos = Button(self.frameDatosAnomalos,text= 'Generar LOG',font=("Courie",9,'bold'),command=exportarLOGDatosAnomalos, width=15, height=1, bd= 2,bg=colorCeleste, relief=GROOVE, highlightbackground=colorNegro)
         btnLogDatosAnomalos.config(state=tk.DISABLED)
         btnLogDatosAnomalos.place(x=700,y=20)
 
@@ -420,7 +418,6 @@ Usuario: {self.gestorDatos.nombre_usuario}\n''')
                 data = self.gestorDatos.execChequeoAutomatico()
                 if data == []:
                     messagebox.showinfo(message=f'No se encontraron datos anómalos', title='Enhorabuena')
-                print(data)
                 for fila in data:             
                     dato = fila                  
                     tabla4.insert('', 'end', values=dato)

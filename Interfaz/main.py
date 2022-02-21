@@ -1,4 +1,4 @@
-# Incialización objeto interfaz
+# Inicialización objeto interfaz
 
 from interfaz import Interfaz
 from baseDatos import BaseDatos
